@@ -1,0 +1,18 @@
+{
+    "name": "easyCollect",
+    "description": "一个管理微博、浏览器收藏夹的工具",
+    "author": "Teaonly",
+    "email": "achang.zhou@qq.com",
+    "version": "1.0.0",
+    "main": "index",
+    "engines": {
+        "node": ">= 0.10.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Teaonly/easyCollect"
+    },
+    "dependencies": {
+        "node-static": "*"
+    }
+}
