@@ -13,6 +13,8 @@
         "url": "https://github.com/Teaonly/easyCollect"
     },
     "dependencies": {
-        "node-static": "*"
+        "node-static": "*",
+        "optimist": "*",
+        "open": "*"
     }
 }
