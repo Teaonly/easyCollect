@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/lib/bootstrap.min.css">
     <link rel="stylesheet" href="css/lib/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/lib/layout-default-1.4.0.css">
+    <link rel="stylesheet" href="css/lib/jqtree.css">
     <!-- 本地CSS文件 -->
     <link rel="stylesheet" href="css/mystyle.css">
 </head>
@@ -23,13 +24,42 @@
   </div>
 
   <div class="ui-layout-west blue">
-    <div class="center">
-      <button type="button" class="btn btn-primary btn-sm">
-        <span class="glyphicon glyphicon-import" aria-hidden="true"></span> 导入
-      </button>
+    <div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
+          同步收藏
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="#" id="btn_import_weibo" >微博</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr/>
+    <div id="sourceTree" class="btn-xs">
+
     </div>
 
+    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+      <button type="button" class="btn btn-link">
+        <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+        编辑标签
+      </button>
+      <button type="button" class="btn btn-link">
+        <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+        编辑分组
+      </button>
+    </div>
+    <hr/>
 
+    <div id="tagsTree" class="btn-xs">
+
+    </div>
+  </div>
+
+  <div id="dialog-confirm" title="Empty the recycle bin?">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
   </div>
 
 </body>
@@ -38,34 +68,11 @@
 <script type="text/javascript" src="js/lib/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery-ui-1.11.4.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.layout-1.4.0.js"></script>
+<script type="text/javascript" src="js/lib/jqtree.js"></script>
 <script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
 
-<!-- 主函数 -->
-<script type="text/javascript">
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/import.js"></script>
 
-// like main function in C
-$(document).ready(function () {
-  var zeroMargin = {
-      top:	0
-    ,	bottom:	0
-    ,	left:	0
-    ,	right:	0
-  };
-  $('body').layout({
-    inset:        zeroMargin,
-    closable:      false,
-    west__minSize: 0.15,
-    west__maxSize: 0.40,
-    center__childOptions:	{
-        closable:      false,
-        inset:        zeroMargin,
-        north__minSize:  0.30,
-        north__maxSize:  0.70
-    }
-  });
-});
-
-
-</script>
 
 </html>

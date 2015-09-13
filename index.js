@@ -2,6 +2,7 @@ var nStatic = require('node-static');
 var fileServer = new nStatic.Server('./www');
 var url = require('url');
 var http = require('http');
+var config = require('./lib/config')
 var app = require('./lib/easyCollect');
 
 var argv = require('optimist')
@@ -24,9 +25,10 @@ if ( argv.cmd === "start" ) {
             fileServer.serve(request, response);
         }).resume();
       }
-    }).listen(8080);
+    }).listen(config.app.listenPort);
 
-    require("open")("http://127.0.0.1:8080/index.html");
+    require("open")(config.app.pathName + "/index.html");
+
     console.log("Open http://127.0.0.1:8080/index.html with browser");
 
 } else if ( argv.cmd === "create") {
