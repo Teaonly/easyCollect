@@ -15,6 +15,7 @@
     "dependencies": {
         "node-static": "*",
         "optimist": "*",
-        "open": "*"
+        "open": "*",
+        "nedb": "*"
     }
 }
