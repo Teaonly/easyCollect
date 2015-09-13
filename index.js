@@ -6,14 +6,15 @@ var config = require('./lib/config')
 var app = require('./lib/easyCollect');
 
 var argv = require('optimist')
-    .usage('Usage: $0 -cmd [create|start] -target db_folder ')
+    .usage('Usage: $0 --cmd [create|sync|view] --target db_folder --source [weibo|twitter]')
     .demand('cmd')
     .demand('target')
-    .describe('cmd', 'create: Create DB, start: Use exist DB')
+    .describe('cmd', 'create: Create DB, view: Use exist DB, sync: import and sync from source.')
     .describe('target', 'Database folder which stores index and feeds')
+    .describe('source', 'Source of collection, such as weibo')
     .argv
 
-if ( argv.cmd === "start" ) {
+if ( argv.cmd === "view" ) {
     app.setup(argv.target);
 
     // start internal HTTP server for web interface
@@ -33,6 +34,23 @@ if ( argv.cmd === "start" ) {
 
 } else if ( argv.cmd === "create") {
     app.create( argv.target );
-} else  {
+} else  if ( argv.cmd === "import") {
+    if ( argv.source === "weibo") {
+        // start internal HTTP server for web interface
+        http.createServer(function (request, response) {
+          if ( request.url.substring(0, 3) === "/_/" ) {
+            app.main(request, response);
+          } else {
+            request.addListener('end', function () {
+                fileServer.serve(request, response);
+            }).resume();
+          }
+        }).listen(config.app.listenPort);
+
+        app.sync(argv.target, argv.source);
+    } else {
+        console.log( require('optimist').help() );
+    }
+} else {
     console.log( require('optimist').help() );
 }

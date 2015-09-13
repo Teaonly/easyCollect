@@ -30,7 +30,7 @@ var g = {};
 g.evt = {};
 g.evt.onImportWeibo = function(evt) {
   evt.preventDefault(false);
-  $.getJSON( "/_/import?source=weibo", function( data ) {
+  $.getJSON( "/_/access?source=weibo", function( data ) {
     if ( data.address != undefined ) {
       window.location.href = data.address;
     } else {
