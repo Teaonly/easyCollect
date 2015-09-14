@@ -18,15 +18,28 @@
 <body>
 
   <div class="ui-layout-center">
+
     <div class="ui-layout-north">
 
+      <div id="listItems" class="list-group">
+
+      </div>
+
     </div>
+
     <div class="ui-layout-center green">
 
     </div>
   </div>
 
   <div class="ui-layout-west blue">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">搜索</button>
+      </span>
+    </div><!-- /input-group -->
+    <br/>
     <div class="btn-group btn-group-xs" role="group" aria-label="...">
       <button type="button" class="btn btn-link btn-xs">
         <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
@@ -45,7 +58,7 @@
   </div>
 
   <div id="waitDialog">
-    <p>正在获取数据，清等待</p>
+    <p id='textShow'>正在获取数据，清等待</p>
   </div>
 
 </body>

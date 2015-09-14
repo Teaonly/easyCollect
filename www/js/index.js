@@ -82,9 +82,17 @@ g.service.getData = function(node) {
       dialogClass: "no-close",
       modal: true
     });
-    
-    $.getJSON( address, function( indexObj ) {
-      console.log(indexObj);
+
+    $.getJSON( address, function( dataObj ) {
+      var itemList = "";
+      for(var i = 0; i < dataObj.length; i++) {
+        itemList +=  '<a href="#" class="list-group-item">';
+        itemList +=  '<h5>' + dataObj[i].title + '</h5>';
+        itemList +=  '<p>' + dataObj[i].content + '</p>';
+        itemList +=  '</a>';
+      }
+      $("#listItems").html(itemList);
+      $( "#waitDialog" ).hide();
     });
   }
 };
