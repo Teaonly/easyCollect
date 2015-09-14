@@ -20,23 +20,52 @@ $(document).ready(function () {
     }
   });
 
-  // 事件绑定
-  $("#btn_import_weibo").button().click(g.evt.onImportWeibo);
-
+  g.service.getIndex();
 });
 
 var g = {};
+g.data = {};
+g.service = {};
+g.service.getIndex = function() {
+  $.getJSON( "/_/getIndex", function( indexObj ) {
+    var treeData = [
+        {label:'数据来源'},
+        {label:'标签'},
+    ];
+    treeData[0].children = [];
+    treeData[0].children.push({label:'全部来源', type:'source', vlaue:'all'});
+    treeData[1].children = [];
+    treeData[1].children.push({label:'未设置', type:'tag', vlaue:''});
 
-g.evt = {};
-g.evt.onImportWeibo = function(evt) {
-  evt.preventDefault(false);
-  $.getJSON( "/_/access?source=weibo", function( data ) {
-    if ( data.address != undefined ) {
-      window.location.href = data.address;
-    } else {
-      alert("获取微博数据错误！");
+    g.data.sources = [];
+    g.data.tags = [];
+    for(var i = 0; i < indexObj.length; i++) {
+      if ( indexObj[i].type === "source" ) {
+        g.data.sources.push(indexObj[i].value);
+        treeData[0].children.push({
+            label:  indexObj[i].display
+          , type:   indexObj[i].type
+          , value:  indexObj[i].value
+        });
+      } else if ( indexObj[i].type === "tag") {
+        g.data.tags.push(indexObj[i].value);
+        treeData[1].children.push({
+            label:  indexObj[i].value
+          , type:   indexObj[i].type
+          , value:  indexObj[i].value
+        });
+      }
     }
+    $("#tagsTree").tree({
+        data: treeData,
+        autoOpen: true,
+        dragAndDrop: false,
+        keyboardSupport: false,
+        onCanSelectNode: function(node) {
+          console.log(node);
+        }
+    });
   }).fail(function() {
-    alert("获取微博数据错误！");
+    alert("获取Index数据错误！");
   })
 };

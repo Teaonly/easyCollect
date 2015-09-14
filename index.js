@@ -14,6 +14,7 @@ var argv = require('optimist')
     .describe('source', 'Source of collection, such as weibo')
     .argv
 
+config.app.data_path = argv.target;
 if ( argv.cmd === "view" ) {
     app.setup(argv.target);
 
@@ -34,7 +35,7 @@ if ( argv.cmd === "view" ) {
 
 } else if ( argv.cmd === "create") {
     app.create( argv.target );
-} else  if ( argv.cmd === "import") {
+} else  if ( argv.cmd === "sync") {
     if ( argv.source === "weibo") {
         // start internal HTTP server for web interface
         http.createServer(function (request, response) {
