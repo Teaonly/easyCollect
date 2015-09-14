@@ -62,10 +62,29 @@ g.service.getIndex = function() {
         dragAndDrop: false,
         keyboardSupport: false,
         onCanSelectNode: function(node) {
-          console.log(node);
+          g.service.getData(node);
         }
     });
   }).fail(function() {
     alert("获取Index数据错误！");
   })
+};
+
+g.service.getData = function(node) {
+  if ( node.type === "source") {
+    var select = node.value;
+    var address = "/_/getDataBySource";
+    if ( select !== "all" && select !== undefined) {
+      address = "/_/getDataBySource?source=" + select;
+    }
+
+    $( "#waitDialog" ).dialog({
+      dialogClass: "no-close",
+      modal: true
+    });
+    
+    $.getJSON( address, function( indexObj ) {
+      console.log(indexObj);
+    });
+  }
 };
