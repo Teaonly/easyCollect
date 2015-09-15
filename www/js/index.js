@@ -85,7 +85,12 @@ g.service.getData = function(node) {
         }
       }
       $("#listItems").html(html);
-      $( "#waitDialog").dialog( "close" );
+      $(".btnDeleteCollect").bind('click',function(){
+        var index = $(this).attr('index');
+        $("#" + index).remove();
+        // TODO 数据库中删除
+      });
+      $("#waitDialog").dialog( "close" );
     });
   }
 };

@@ -4,9 +4,9 @@
 
   weibo.buildListItem = function(item) {
     var html = "";
-    html +=  '<div class="list-group-item well">';
+    html +=  '<div class="list-group-item well" id="' + item.index + '"">';
     html +=  '<div class="text-right noline">';
-    html +=  '<button type="button" class="btn btn-danger btn-xs">' +
+    html +=  '<button type="button" class="btn btn-danger btn-xs btnDeleteCollect" index="' + item.index + '"">' +
              '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
              '删除</button></div>';
 
@@ -20,6 +20,8 @@
       html +=  '</div>';
     }
     html +=  '<p>' + item.post.date + '<button type="button" class="btn btn-link btn-xs">访问原站</button></p>';
+
+    html +=  g.tagWidget.build( item.index, ['机器学习','计算机视觉'] );
     html +=  '</div>';
 
     return html;
