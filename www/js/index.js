@@ -84,15 +84,14 @@ g.service.getData = function(node) {
     });
 
     $.getJSON( address, function( dataObj ) {
-      var itemList = "";
+      var html = "";
       for(var i = 0; i < dataObj.length; i++) {
-        itemList +=  '<a href="#" class="list-group-item">';
-        itemList +=  '<h5>' + dataObj[i].title + '</h5>';
-        itemList +=  '<p>' + dataObj[i].content + '</p>';
-        itemList +=  '</a>';
+        if ( dataObj[i].source == 'weibo') {
+          html += g.weibo.buildListItem( dataObj[i]);
+        }
       }
-      $("#listItems").html(itemList);
-      $( "#waitDialog" ).hide();
+      $("#listItems").html(html);
+      $( "#waitDialog").dialog( "close" );
     });
   }
 };
