@@ -11,13 +11,7 @@ $(document).ready(function () {
     inset:        zeroMargin,
     closable:      false,
     west__minSize: 0.15,
-    west__maxSize: 0.40,
-    center__childOptions:	{
-        closable:      false,
-        inset:        zeroMargin,
-        north__minSize:  0.30,
-        north__maxSize:  0.70
-    }
+    west__maxSize: 0.40
   });
 
   g.service.getIndex();

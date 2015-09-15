@@ -5,3 +5,7 @@
 .no-close .ui-dialog-titlebar-close {
   display: none;
 }
+
+.noline {
+  margin-bottom: -30px;
+}
