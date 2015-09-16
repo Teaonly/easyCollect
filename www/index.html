@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/lib/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="css/lib/layout-default-1.4.0.css">
     <link rel="stylesheet" href="css/lib/jqtree.css">
+    <link rel="stylesheet" href="css/lib/jquery.tag-editor.css">
 
     <!-- 本地CSS文件 -->
     <link rel="stylesheet" href="css/mystyle.css">
@@ -35,13 +36,21 @@
     <hr/>
 
     <div id="tagsTree" class="btn-xs">
-        
+
     </div>
 
   </div>
 
   <div id="waitDialog">
     <p id='textShow'>正在获取数据，清等待</p>
+  </div>
+
+  <div id="addTagDialog" title="增加新的标签">
+    <form>
+      <fieldset>
+        <input type="text" id="inputNewTag" value="" class="text ui-widget-content ui-corner-all">
+      </fieldset>
+    </form>
   </div>
 
 </body>
@@ -51,7 +60,9 @@
 <script type="text/javascript" src="js/lib/jquery-ui-1.11.4.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.layout-1.4.0.js"></script>
 <script type="text/javascript" src="js/lib/jqtree.js"></script>
-<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/lib/jqtree.js"></script>
+<script type="text/javascript" src="js/lib/jquery.caret.js"></script>
+<script type="text/javascript" src="js/lib/jquery.tag-editor.min.js"></script>
 
 <script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript" src="js/tags.js"></script>

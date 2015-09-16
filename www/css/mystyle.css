@@ -9,3 +9,11 @@
 .noline {
   margin-bottom: -30px;
 }
+
+.collect:focus {
+  display: block;
+}
+
+.collect {
+
+}
