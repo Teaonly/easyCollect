@@ -31,25 +31,28 @@ g.service.getIndex = function() {
     treeData[1].children = [];
     treeData[1].children.push({label:'未设置', type:'tag', vlaue:''});
 
+    console.log(indexObj);
+
     g.data.sources = [];
     g.data.tags = [];
-    for(var i = 0; i < indexObj.length; i++) {
-      if ( indexObj[i].type === "source" ) {
-        g.data.sources.push(indexObj[i].value);
-        treeData[0].children.push({
-            label:  indexObj[i].display
-          , type:   indexObj[i].type
-          , value:  indexObj[i].value
-        });
-      } else if ( indexObj[i].type === "tag") {
-        g.data.tags.push(indexObj[i].value);
-        treeData[1].children.push({
-            label:  indexObj[i].value
-          , type:   indexObj[i].type
-          , value:  indexObj[i].value
-        });
-      }
+    for(var i = 0; i < indexObj.sources.length; i++) {
+      g.data.sources.push(indexObj.sources[i].value);
+      treeData[0].children.push({
+          label:  indexObj.sources[i].display
+        , type:   'source'
+        , value:  indexObj.sources[i].value
+      });
     }
+
+    for(var i = 0; i < indexObj.tags.length; i++) {
+      g.data.tags.push(indexObj.tags[i].value);
+      treeData[1].children.push({
+          label:  indexObj.tags[i].display
+        , type:   'tag'
+        , value:  indexObj.tags[i].value
+      });
+    }
+
     $("#tagsTree").tree({
         data: treeData,
         autoOpen: true,
