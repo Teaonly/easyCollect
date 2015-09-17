@@ -7,7 +7,7 @@
     html += '<button type="button" class="btn btn-link btn-xs btnAddTag">增加标签</button>'
 
     for(var i = 0; tags !== undefined && i < tags.length; i++) {
-      html += '<button type="button" class="btn btn-info btn-xs active btnRemoveTag" tagValue="'+ tags[i] +'">' + tags[i] + '<span class="glyphicon glyphicon-remove-circle"></span></button>'
+      html += '<button type="button" class="btn btn-info btn-xs  btnRemoveTag" tagValue="'+ tags[i] +'">' + tags[i] + '<span class="glyphicon glyphicon-remove-circle"></span></button>'
     }
 
     html += "</div>";
@@ -16,7 +16,7 @@
 
   tagWidget.addTag = function( tagDiv, newTags ) {
     for (var i = 0; i < newTags.length; i++) {
-      var html = '<button type="button" class="btn btn-info btn-xs active btnRemoveTag" tagValue="'+ newTags[i] +'">' + newTags[i] + '<span class="glyphicon glyphicon-remove-circle"></span></button>'
+      var html = '<button type="button" class="btn btn-default btn-xs  btnRemoveTag" tagValue="'+ newTags[i] +'">' + newTags[i] + '<span class="glyphicon glyphicon-remove-circle"></span></button>'
       tagDiv.append( html );
     }
   };

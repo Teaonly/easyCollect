@@ -123,6 +123,15 @@ g.service.removeTag = function(index, tag) {
       break;
     }
   }
+
+  var oldTags = g.data.collects[index];
+  var newTags = [];
+  for(var i =0; oldTags !== undefined && i < oldTags.length; i++) {
+    if ( oldTags[i] != tag ) {
+      newTags.push( oldTags[i]);
+    }
+  }
+
   g.gui.updateTagTree();
 };
 
