@@ -3,53 +3,22 @@
   var tagWidget = {}
 
   tagWidget.build = function(index, tags) {
-    /*
-    <div class="bs-example" data-example-id="split-button-dropdown">
-        <div class="btn-group">
-          <button type="button" class="btn btn-default  btn-xs">增加标签</button>
-        </div>
-
-        <div class="btn-group">
-          <a href="#" class="btn btn-link btn-xs disabled" role="button">机器学习</a>
-          <button type="button" class="btn btn-link dropdown-toggle  btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a href="#">删除</a></li>
-          </ul>
-        </div>
-
-        <div class="btn-group">
-          <a href="#" class="btn btn-link btn-xs disabled" role="button">计算机视觉</a>
-          <button type="button" class="btn btn-link dropdown-toggle  btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a href="#">删除</a></li>
-          </ul>
-        </div>
-      </div>
-    */
-
-    var html = '<div data-example-id="split-button-dropdown">' +
-               '<div class="btn-group">' +
-               '<button type="button" class="btn btn-default btn-xs btnAddTag" index="'+ index +'">增加标签</button>' +
-               '</div>';
+    var html = '<div index="'+ index +'">';
+    html += '<button type="button" class="btn btn-link btn-xs btnAddTag">增加标签</button>'
 
     for(var i = 0; tags !== undefined && i < tags.length; i++) {
-      html += '<div class="btn-group">' +
-              '<a href="#" class="btn btn-link btn-xs disabled" role="button">'+ tags[i] +'</a>' +
-              '<button type="button" class="btn btn-link dropdown-toggle btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-              '<span class="caret"></span>' +
-              '</button>' +
-              '<ul class="dropdown-menu">' +
-              '<li><a href="#" class="btnRemove" tag="' + tags[i]+ '" index="'+ index + '">删除</a></li>' +
-              '</ul>' +
-              '</div>';
+      html += '<button type="button" class="btn btn-info btn-xs active btnRemoveTag" tagValue="'+ tags[i] +'">' + tags[i] + '<span class="glyphicon glyphicon-remove-circle"></span></button>'
     }
 
     html += "</div>";
     return html;
+  };
+
+  tagWidget.addTag = function( tagDiv, newTags ) {
+    for (var i = 0; i < newTags.length; i++) {
+      var html = '<button type="button" class="btn btn-info btn-xs active btnRemoveTag" tagValue="'+ newTags[i] +'">' + newTags[i] + '<span class="glyphicon glyphicon-remove-circle"></span></button>'
+      tagDiv.append( html );
+    }
   };
 
   exports['tagWidget'] = tagWidget;

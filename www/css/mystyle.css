@@ -10,10 +10,14 @@
   margin-bottom: -30px;
 }
 
-.collect:focus {
-  display: block;
+.btnRemoveTag{
+  margin-right: 0.3em;
 }
 
-.collect {
+.spanSelectTag {
+  margin-right: 0.1em;
+}
 
+#unselectedTags {
+  margin-top: 5px;
 }
