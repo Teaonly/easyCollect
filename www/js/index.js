@@ -81,6 +81,7 @@ g.service.getData = function(node) {
         g.service.removeCollect( index );
         $("#item_" + index).remove();
       });
+      $(".linkText").linkify();
       $(".btnAccessOrignalWeibo").bind('click', function(){
         var index = $(this).attr('index');
         if(index !== undefined) {
@@ -147,7 +148,15 @@ g.service.addTag = function(index, newTags) {
 };
 
 g.service.accessWeibo = function(index) {
-
+  if ( index === undefined) {
+    return;
+  }
+  var address = '/_/getAddressOfWeibo?index=' + index;
+  $.getJSON( address, function( dataObj ) {
+    if ( dataObj.url != undefined) {
+      var win = window.open(dataObj.url, '_blank');
+    }
+  });
 };
 
 g.gui.updateTagTree = function() {
@@ -158,6 +167,7 @@ g.gui.updateTagTree = function() {
   treeData[0].children = [];
   treeData[0].children.push({label:'全部来源', type:'source', vlaue:'all'});
   treeData[1].children = [];
+  treeData[1].children.push({label:'未设置标签', type:'tag', vlaue:'null'});
 
   for(var i = 0; i < g.data.sources.length; i++) {
     treeData[0].children.push({
