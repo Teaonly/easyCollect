@@ -26,14 +26,13 @@ g.gui = {};
 g.service.getIndex = function() {
   $.getJSON( "/_/getIndex", function( indexObj ) {
     g.data.sources = [];
-    g.data.tags = [];
-
     for(var i = 0; i < indexObj.sources.length; i++) {
       g.data.sources.push({'value': indexObj.sources[i].value, 'display':indexObj.sources[i].display });
     }
 
-    for(var i = 0; i < indexObj.tags.length; i++) {
-      g.data.tags.push({'value':indexObj.tags[i].value, 'number':parseInt(indexObj.tags[i].number)});
+    g.data.tags = {};
+    for (var t in indexObj.tags) {
+      g.data.tags[t] = parseInt(indexObj.tags[t]);
     }
 
     g.gui.updateTagTree();
@@ -51,8 +50,12 @@ g.service.getData = function(node) {
     if ( select !== "all" && select !== undefined) {
       address = "/_/getDataBySource?source=" + select;
     }
-  } else {
-    // 其他方式
+  } else if (node.type === "tag") {
+    var select = node.value;
+    address = "/_/getDataByTag";
+    if ( select !== null && select !== undefined) {
+      address = "/_/getDataByTag?tag=" + select;
+    }
   }
 
   if ( address !== null) {
@@ -96,17 +99,18 @@ g.service.getData = function(node) {
 };
 
 g.service.removeCollect = function(index){
-  // TODO call JSON
+  var address = '/_/removeCollect?index=' + index;
+  $.getJSON( address, function( dataObj ) {
+
+  });
 
   var needUpdate = false;
   var removedTags = g.data.collects[index];
   for(var j = 0; removedTags !== undefined && j < removedTags.length; j++) {
-    for(var i = 0; i < g.data.tags.length; i++) {
-      if (g.data.tags[i].value === removedTags[j]) {
-        g.data.tags[i].number --;
-        needUpdate = true;
-        break;
-      }
+    g.data.tags[removedTags[j]] --;
+    if ( g.data.tags[removedTags[j]] === 0) {
+      delete g.data.tags[removedTags[j]];
+      needUpdate = true;
     }
   }
   if ( needUpdate) {
@@ -115,20 +119,19 @@ g.service.removeCollect = function(index){
 }
 
 g.service.removeTag = function(index, tag) {
-  // TODO call JSON
-
-  for(var i = 0; i < g.data.tags.length; i++) {
-    if (g.data.tags[i].value === tag) {
-      g.data.tags[i].number --;
-      break;
-    }
+  var tagsString = jQuery.param({tags:g.data.collects[index]});
+  var address = '/_/updateTag?index=' + index;
+  if ( tagsString !== "") {
+    address = address + '&' + tagsString;
   }
+  $.getJSON( address, function( dataObj ) {
 
-  var oldTags = g.data.collects[index];
-  var newTags = [];
-  for(var i =0; oldTags !== undefined && i < oldTags.length; i++) {
-    if ( oldTags[i] != tag ) {
-      newTags.push( oldTags[i]);
+  });
+
+  if ( g.data.tags.hasOwnProperty(tag)) {
+    g.data.tags[tag] --;
+    if ( g.data.tags[tag] === 0) {
+      delete g.data.tags[tag];
     }
   }
 
@@ -136,21 +139,21 @@ g.service.removeTag = function(index, tag) {
 };
 
 g.service.addTag = function(index, newTags) {
-  // TODO call JSON
+  var tagsString = jQuery.param({tags:g.data.collects[index]});
+  var address = '/_/updateTag?index=' + index;
+  if ( tagsString !== "") {
+    address = address + '&' + tagsString;
+  }
+  $.getJSON( address, function( dataObj ) {
+
+  });
+
 
   for(var j = 0; j < newTags.length; j++) {
-    var isNewTag = true;
-
-    for(var i = 0; i < g.data.tags.length; i++) {
-      if (g.data.tags[i].value === newTags[j]) {
-        g.data.tags[i].number ++;
-        isNewTag = false;
-        break;
-      }
-    }
-
-    if (isNewTag === true) {
-      g.data.tags.push({value: newTags[j], number:1});
+    if ( g.data.tags.hasOwnProperty(newTags[j]) ) {
+       g.data.tags[newTags[j]] ++;
+    } else {
+       g.data.tags[newTags[j]] = 1;
     }
   }
   g.gui.updateTagTree();
@@ -176,7 +179,7 @@ g.gui.updateTagTree = function() {
   treeData[0].children = [];
   treeData[0].children.push({label:'全部来源', type:'source', vlaue:'all'});
   treeData[1].children = [];
-  treeData[1].children.push({label:'未设置标签', type:'tag', vlaue:'null'});
+  treeData[1].children.push({label:'未设置标签', type:'tag', vlaue:null});
 
   for(var i = 0; i < g.data.sources.length; i++) {
     treeData[0].children.push({
@@ -186,15 +189,14 @@ g.gui.updateTagTree = function() {
     });
   }
 
-  for(var i = 0; i < g.data.tags.length; i++) {
-    if ( g.data.tags[i].number > 0) {
-      treeData[1].children.push({
-          label:  g.data.tags[i].value + "（" + g.data.tags[i].number + "）"
-        , value:  g.data.tags[i].value
-        , number: g.data.tags[i].number
-      });
-    }
+  for (var t in g.data.tags) {
+    treeData[1].children.push({
+        label:  t + "（" + g.data.tags[t] + "）"
+      , type:   'tag'
+      , value:  t
+    });
   }
+
   $("#tagsTree").tree('destroy');
   $("#tagsTree").tree({
       data: treeData,
@@ -218,6 +220,15 @@ g.gui.refreshTagEvent = function() {
     var index = $(this).parent().attr('index');
     var tagValue = $(this).attr('tagValue');
     $(this).remove();
+
+    var oldTags = g.data.collects[index];
+    var newTags = [];
+    for(var i =0; oldTags !== undefined && i < oldTags.length; i++) {
+      if ( oldTags[i] != tagValue ) {
+        newTags.push( oldTags[i]);
+      }
+    }
+    g.data.collects[index] = newTags;
 
     g.service.removeTag(index, tagValue);
   });
@@ -271,16 +282,16 @@ g.gui.addTag = function(tagDiv, index) {
   var tagSources = [];
   var tagSelected = g.data.collects[index];
 
-  for(var i = 0; i < g.data.tags.length; i++) {
+  for(var i in g.data.tags) {
     var isNewTag = true;
     for(var j = 0; tagSelected != undefined && j < tagSelected.length; j++) {
-      if ( g.data.tags[i].value === tagSelected[j]) {
+      if ( g.data.tags[i] === tagSelected[j]) {
         isNewTag = false;
         break;
       }
     }
     if ( isNewTag ) {
-      tagSources.push( g.data.tags[i].value  )
+      tagSources.push(i)
     }
   }
 

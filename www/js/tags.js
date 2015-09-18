@@ -16,7 +16,7 @@
 
   tagWidget.addTag = function( tagDiv, newTags ) {
     for (var i = 0; i < newTags.length; i++) {
-      var html = '<button type="button" class="btn btn-default btn-xs  btnRemoveTag" tagValue="'+ newTags[i] +'">' + newTags[i] + '<span class="glyphicon glyphicon-remove-circle"></span></button>'
+      var html = '<button type="button" class="btn btn-info btn-xs  btnRemoveTag" tagValue="'+ newTags[i] +'">' + newTags[i] + '<span class="glyphicon glyphicon-remove-circle"></span></button>'
       tagDiv.append( html );
     }
   };
