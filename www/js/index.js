@@ -242,8 +242,8 @@ g.gui.addTag = function(tagDiv, index) {
 
   var dialog = $("#addTagDialog").dialog({
     modal: true,
-    width: 480,
-    height: 360,
+    width: 640,
+    height: 480,
     buttons: {
       "确定": function() {
         var newTags = $("#inputNewTag").val().split(',');
