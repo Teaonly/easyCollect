@@ -299,6 +299,8 @@ g.gui.addTag = function(tagDiv, index) {
     }
   }
 
+  tagSources.sort();
+
   $('#inputNewTag').tagEditor('destroy');
   $('#inputNewTag').tagEditor({
     removeDuplicates: true,
