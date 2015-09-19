@@ -25,10 +25,7 @@ g.service = {};
 g.gui = {};
 g.service.getIndex = function() {
   $.getJSON( "/_/getIndex", function( indexObj ) {
-    g.data.sources = [];
-    for(var i = 0; i < indexObj.sources.length; i++) {
-      g.data.sources.push({'value': indexObj.sources[i].value, 'display':indexObj.sources[i].display });
-    }
+    g.data.sources = indexObj.sources;
 
     g.data.tags = {};
     for (var t in indexObj.tags) {
@@ -181,15 +178,22 @@ g.gui.updateTagTree = function() {
   treeData[1].children = [];
   treeData[1].children.push({label:'未设置标签', type:'tag', vlaue:null});
 
-  for(var i = 0; i < g.data.sources.length; i++) {
+  for(var i in g.data.sources) {
     treeData[0].children.push({
-        label:  g.data.sources[i].display
+        label:  g.data.sources[i]
       , type:   'source'
-      , value:  g.data.sources[i].value
+      , value:  i
     });
   }
 
+  var myTags = [];
   for (var t in g.data.tags) {
+      myTags.push(t);
+  }
+  myTags.sort();
+
+  for(var i =0; i < myTags.length; i++) {
+    var t = myTags[i];
     treeData[1].children.push({
         label:  t + "（" + g.data.tags[t] + "）"
       , type:   'tag'
