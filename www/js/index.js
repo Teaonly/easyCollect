@@ -16,6 +16,8 @@ $(document).ready(function () {
     west__maxSize: 0.40
   });
 
+  $("#btnAddURL").bind('click', g.gui.addURL);
+
   g.service.getIndex();
 });
 
@@ -235,6 +237,12 @@ g.gui.refreshTagEvent = function() {
     g.data.collects[index] = newTags;
 
     g.service.removeTag(index, tagValue);
+  });
+};
+
+g.gui.addURL = function() {
+  var dialog = $("#addURLDialog").dialog({
+      modal: true
   });
 };
 

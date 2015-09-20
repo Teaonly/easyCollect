@@ -28,7 +28,7 @@
 
   <div class="ui-layout-west blue">
     <div class="center">
-      <button type="button" class="btn btn-default btn-xs">
+      <button id='btnAddURL' type="button" class="btn btn-default btn-xs">
         <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
         添加收藏
       </button>
@@ -54,6 +54,22 @@
     <div id="unselectedTags">
     </div>
   </div>
+
+  <div id="addURLDialog" title="增加新收藏">
+    <form>
+      <fieldset>
+        <label>网址</label>
+        <br/>
+        <input type="text" name="url" id="inputNewURL" value="" class="text ui-widget-content ui-corner-all">
+        <br/>
+        <label>网址说明</label>
+        <textarea name = "memo" class="form-control" rows="3"></textarea>
+      </fieldset>
+    </form>
+    <div id="unselectedTags">
+    </div>
+  </div>
+
 
 </body>
 
