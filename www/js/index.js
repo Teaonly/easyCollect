@@ -70,10 +70,7 @@ g.service.getData = function(node) {
       for(var i = 0; i < dataObj.length; i++) {
         // B端保存数据
         g.data.collects[ dataObj[i].index ] = dataObj[i].tags;
-
-        if ( dataObj[i].source == 'weibo') {
-          html += g.weibo.buildListItem( dataObj[i]);
-        }
+        html += g.post.build( dataObj[i]);
       }
       $("#listItems").html(html);
 
@@ -159,7 +156,14 @@ g.service.addTag = function(index, newTags) {
 };
 
 g.service.addURL = function(url, memo) {
-  
+  var param = {
+    'source': 'url',
+    'url' : url,
+    'memo': memo
+  };
+  var address = '/_/insertCollect?' + $.param(param);
+  $.getJSON( address, function( dataObj ) {
+  });
 };
 
 g.service.accessWeibo = function(index) {
@@ -253,12 +257,12 @@ g.gui.addURL = function() {
           var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
           var url = $("#inputURL").val();
           var memo = $("#textURLMemo").val();
-          if ( memo != "" && regexp.test(url)) {
+          if (regexp.test(url) && memo != "" && memo.length <= 144) {
             g.service.addURL(url, memo);
             dialog.find( "form" )[0].reset();
             dialog.dialog( "close" );
           } else {
-            alert("请输入正确的信息");
+            alert("请输入正确的信息，注释不能超过144个字。");
           }
         },
         "取消": function(){

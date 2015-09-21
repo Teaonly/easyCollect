@@ -16,6 +16,7 @@
         "node-static": "*",
         "optimist": "*",
         "open": "*",
-        "nedb": "*"
+        "nedb": "*",
+        "blueimp-md5": "*" 
     }
 }
