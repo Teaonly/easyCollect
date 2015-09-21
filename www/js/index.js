@@ -186,7 +186,9 @@ g.gui.updateTagTree = function() {
   treeData[0].children = [];
   treeData[0].children.push({label:'全部来源', type:'source', vlaue:'all'});
   treeData[1].children = [];
-  treeData[1].children.push({label:'未设置标签', type:'tag', vlaue:null});
+  treeData[1].children.push({label:'#未设置标签#', type:'tag', vlaue:null});
+  treeData[1].children.push({label:'#多标签选择#', type:'tag', vlaue:null});
+  treeData[1].children.push({label:'#星标#', type:'start', vlaue:'start'});
 
   for(var i in g.data.sources) {
     treeData[0].children.push({
