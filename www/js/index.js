@@ -158,6 +158,10 @@ g.service.addTag = function(index, newTags) {
   g.gui.updateTagTree();
 };
 
+g.service.addURL = function(url, memo) {
+  
+};
+
 g.service.accessWeibo = function(index) {
   if ( index === undefined) {
     return;
@@ -242,7 +246,26 @@ g.gui.refreshTagEvent = function() {
 
 g.gui.addURL = function() {
   var dialog = $("#addURLDialog").dialog({
-      modal: true
+      modal: true,
+      width: 480,
+      buttons: {
+        "确定": function() {
+          var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+          var url = $("#inputURL").val();
+          var memo = $("#textURLMemo").val();
+          if ( memo != "" && regexp.test(url)) {
+            g.service.addURL(url, memo);
+            dialog.find( "form" )[0].reset();
+            dialog.dialog( "close" );
+          } else {
+            alert("请输入正确的信息");
+          }
+        },
+        "取消": function(){
+          dialog.find( "form" )[0].reset();
+          dialog.dialog( "close" );
+        }
+      }
   });
 };
 
