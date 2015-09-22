@@ -183,12 +183,13 @@ g.gui.updateTagTree = function() {
       {label:'数据来源'},
       {label:'标签'},
   ];
+
   treeData[0].children = [];
   treeData[0].children.push({label:'全部来源', type:'source', vlaue:'all'});
   treeData[1].children = [];
   treeData[1].children.push({label:'#未设置标签#', type:'tag', vlaue:null});
-  treeData[1].children.push({label:'#多标签选择#', type:'tag', vlaue:null});
-  treeData[1].children.push({label:'#星标#', type:'start', vlaue:'start'});
+  treeData[1].children.push({label:'#多标签选择#', type:'tag', vlaue:[]});
+  treeData[1].children.push({label:'#星标#', type:'start'});
 
   for(var i in g.data.sources) {
     treeData[0].children.push({
@@ -199,18 +200,50 @@ g.gui.updateTagTree = function() {
   }
 
   var myTags = [];
+  var subTree = {};
   for (var t in g.data.tags) {
-      myTags.push(t);
+    myTags.push(t);
+    var splitPos = t.indexOf('-');
+    if ( splitPos > 0 && splitPos < t.length - 1) {
+      var cat = t.substring(0, splitPos);
+      if ( subTree[cat] === undefined) {
+        subTree[cat] = [];
+        treeData[1].children.push({
+            label:  cat
+          , children: subTree[cat]
+        });
+      }
+    }
   }
   myTags.sort();
 
+  treeData[1].children.sort( function(a,b) {
+    if ( a.label > b.label) {
+      return 1;
+    } if ( a.label === b.label) {
+      return 0;
+    } else {
+      return -1;
+    }
+  });
+
   for(var i =0; i < myTags.length; i++) {
     var t = myTags[i];
-    treeData[1].children.push({
+    var splitPos = t.indexOf('-');
+    if ( splitPos > 0 && splitPos < t.length - 1) {
+      var cat = t.substring(0, splitPos);
+      subTree[cat].push({
         label:  t + "（" + g.data.tags[t] + "）"
-      , type:   'tag'
-      , value:  t
-    });
+        , type:   'tag'
+        , value:  t
+      });
+    } else {
+      treeData[1].children.push({
+          label:  t + "（" + g.data.tags[t] + "）"
+        , type:   'tag'
+        , value:  t
+      });
+    }
   }
 
   $("#tagsTree").tree('destroy');

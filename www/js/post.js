@@ -14,7 +14,7 @@
     html +=  '<blockquote><p class="linkText">' + item.post.text + '</p></blockquote>';
     if ( item.repost !== undefined ) {
       html +=  '<div class="well">';
-      html +=  '<a href="http://weibo.com/u/' + item.repost.user_id + '" target="_blank"><h6>@' + item.repost.user_name + '</h6></a>';
+      html +=  '<h6><a href="http://weibo.com/u/' + item.repost.user_id + '" target="_blank"><h6>@' + item.repost.user_name + '</h6></a>';
       html +=  '<blockquote><p class="linkText">' + item.repost.text + '</p></blockquote>';
       html +=  '<p>' + item.repost.date + '</p>';
       html +=  '</div>';
@@ -35,13 +35,13 @@
              '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
              '删除</button></div>';
 
-    html +=  '<h6><a href="' + item.url + '" target="_blank"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>网页链接</a></h6>';
+    html +=  '<h6><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>网页链接</a></h6>';
     html +=  '<blockquote><p class="linkText">' + item.memo + '</p></blockquote>';
 
-    html +=  '<p>' + item.date + '</p>';
+    html +=  '<p>' + item.date + '<a href="' + item.url + '" target="_blank" class="btn btn-link btn-xs">访问原站</a></p>';
 
     html +=  g.tagWidget.build( item.index, item.tags );
-    
+
     html +=  '</div>';
 
     return html;
