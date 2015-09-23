@@ -12,6 +12,7 @@ $(document).ready(function () {
   $('body').layout({
     inset:        zeroMargin,
     closable:      false,
+    west__size:    0.20,
     west__minSize: 0.15,
     west__maxSize: 0.40
   });
@@ -186,11 +187,6 @@ g.gui.updateTagTree = function() {
 
   treeData[0].children = [];
   treeData[0].children.push({label:'全部来源', type:'source', vlaue:'all'});
-  treeData[1].children = [];
-  treeData[1].children.push({label:'#未设置标签#', type:'tag', vlaue:null});
-  treeData[1].children.push({label:'#多标签选择#', type:'tag', vlaue:[]});
-  treeData[1].children.push({label:'#星标#', type:'start'});
-
   for(var i in g.data.sources) {
     treeData[0].children.push({
         label:  g.data.sources[i]
@@ -199,6 +195,7 @@ g.gui.updateTagTree = function() {
     });
   }
 
+  treeData[1].children = [];
   var myTags = [];
   var subTree = {};
   for (var t in g.data.tags) {
@@ -216,7 +213,6 @@ g.gui.updateTagTree = function() {
     }
   }
   myTags.sort();
-
   treeData[1].children.sort( function(a,b) {
     if ( a.label > b.label) {
       return 1;
@@ -226,6 +222,10 @@ g.gui.updateTagTree = function() {
       return -1;
     }
   });
+
+  treeData[1].children.unshift({label:'#星标#', type:'start'});
+  treeData[1].children.unshift({label:'#多标签选择#', type:'tag', vlaue:[]});
+  treeData[1].children.unshift({label:'#未设置标签#', type:'tag', vlaue:null});
 
   for(var i =0; i < myTags.length; i++) {
     var t = myTags[i];
