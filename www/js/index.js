@@ -273,7 +273,7 @@ g.gui.updateTagTree = function() {
   $("#tagsTree").tree('destroy');
   $("#tagsTree").tree({
       data: treeData,
-      autoOpen: true,
+      autoOpen: 0,
       dragAndDrop: false,
       keyboardSupport: false,
       onCanSelectNode: function(node) {

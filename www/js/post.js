@@ -40,7 +40,7 @@
 
     html +=  '<p>' + item.date + '<a href="' + item.url + '" target="_blank" class="btn btn-link btn-xs">访问原站</a></p>';
 
-    html +=  g.tagWidget.build( item.index, item.tags );
+    html +=  g.tagWidget.build( item.index, item.tags, item.star );
 
     html +=  '</div>';
 
