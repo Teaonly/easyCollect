@@ -11,7 +11,8 @@
 }
 
 .btnRemoveTag{
-  margin-right: 0.3em;
+  margin-right: 0.2em;
+  margin-left: 0.1em;
 }
 
 .spanSelectTag {
@@ -24,4 +25,13 @@
 
 .inlineText {
   width: 100%;
+}
+
+.btnStar {
+  margin-right: 0.2em;
+  margin-left: 0.1em;
+}
+
+.stared {
+  color: red;
 }

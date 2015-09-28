@@ -21,7 +21,7 @@
     }
     html +=  '<p>' + item.post.date + '<button type="button" class="btn btn-link btn-xs btnAccessOrignalWeibo" index="' + item.index + '">访问原站</button></p>';
 
-    html +=  g.tagWidget.build( item.index, item.tags );
+    html +=  g.tagWidget.build( item.index, item.tags, item.star );
     html +=  '</div>';
 
     return html;

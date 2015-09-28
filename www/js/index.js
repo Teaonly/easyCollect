@@ -56,6 +56,8 @@ g.service.getData = function(node) {
     if ( select !== null && select !== undefined) {
       address = "/_/getDataByTag?tag=" + select;
     }
+  } else if (node.type === 'star') {
+    address = "/_/getDataByStar";
   }
 
   if ( address !== null) {
@@ -167,6 +169,14 @@ g.service.addURL = function(url, memo) {
   });
 };
 
+g.service.doStar = function(index, isStar) {
+  var starString = jQuery.param({star:isStar});
+  var address = '/_/updateStar?index=' + index;
+  address = address + '&' + starString;
+  $.getJSON( address, function( dataObj ) {
+  });
+};
+
 g.service.accessWeibo = function(index) {
   if ( index === undefined) {
     return;
@@ -223,7 +233,7 @@ g.gui.updateTagTree = function() {
     }
   });
 
-  treeData[1].children.unshift({label:'#星标#', type:'start'});
+  treeData[1].children.unshift({label:'#星标#', type:'star'});
   treeData[1].children.unshift({label:'#多标签选择#', type:'tag', vlaue:[]});
   treeData[1].children.unshift({label:'#未设置标签#', type:'tag', vlaue:null});
 
@@ -263,6 +273,25 @@ g.gui.refreshTagEvent = function() {
   $(".btnAddTag").bind('click', function(){
     var index = $(this).parent().attr('index');
     g.gui.addTag($(this).parent(), index);
+  });
+  // 星标
+  $(".btnStar").bind('click', function() {
+     var index = $(this).parent().attr('index');
+     var iSelector = $(this).find('i:first');
+     if (iSelector.hasClass('stared')) {
+       iSelector.removeClass('glyphicon-star');
+       iSelector.addClass('glyphicon-star-empty');
+       iSelector.removeClass('stared');
+
+       g.service.doStar(index, false);
+     } else {
+       iSelector.removeClass('glyphicon-star-empty');
+       iSelector.addClass('glyphicon-star');
+       iSelector.addClass('stared');
+
+       g.service.doStar(index, true);
+     }
+
   });
   // 移除标签
   $(".btnRemoveTag").bind('click', function(){
