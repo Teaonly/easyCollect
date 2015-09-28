@@ -58,6 +58,20 @@ g.service.getData = function(node) {
     }
   } else if (node.type === 'star') {
     address = "/_/getDataByStar";
+  } else if (node.type === 'tags') {
+    var tagsString = jQuery.param({tags:node.value});
+    address = "/_/getDataByTags?and=" + (node.and === true) + "&" + tagsString;
+  } else if (node.type === 'select_tags') {
+      g.gui.selectTags(function(tags, and){
+        var node = {};
+        node.type = 'tags';
+        node.value = tags;
+        node.and = and;
+        g.service.getData(node);
+      });
+      return;
+  } else {
+    return;
   }
 
   if ( address !== null) {
@@ -234,7 +248,7 @@ g.gui.updateTagTree = function() {
   });
 
   treeData[1].children.unshift({label:'#星标#', type:'star'});
-  treeData[1].children.unshift({label:'#多标签选择#', type:'tag', vlaue:[]});
+  treeData[1].children.unshift({label:'#多标签选择#', type:'select_tags', vlaue:[]});
   treeData[1].children.unshift({label:'#未设置标签#', type:'tag', vlaue:null});
 
   for(var i =0; i < myTags.length; i++) {
@@ -388,13 +402,13 @@ g.gui.addTag = function(tagDiv, index) {
   for(var i in g.data.tags) {
     var isNewTag = true;
     for(var j = 0; tagSelected != undefined && j < tagSelected.length; j++) {
-      if ( g.data.tags[i] === tagSelected[j]) {
+      if ( i === tagSelected[j]) {
         isNewTag = false;
         break;
       }
     }
     if ( isNewTag ) {
-      tagSources.push(i)
+      tagSources.push(i);
     }
   }
 
@@ -418,5 +432,61 @@ g.gui.addTag = function(tagDiv, index) {
   $(".btnSelectTag").bind('click',function(){
     $('#inputNewTag').tagEditor('addTag', $(this).attr('tagValue'));
   });
+}
 
+g.gui.selectTags = function(cb) {
+  // 按标签多选
+  var dialog = $("#addTagDialog").dialog({
+    title: '多标签选择',
+    modal: true,
+    width: 640,
+    height: 480,
+    buttons: {
+      "确定（and）": function() {
+        var selectedTags = $("#inputNewTag").val().split(',');
+        if ( selectedTags.length > 0) {
+          cb(selectedTags, true);
+        }
+        dialog.find( "form" )[0].reset();
+        dialog.dialog( "close" );
+      },
+      "确定（or）": function() {
+        var selectedTags = $("#inputNewTag").val().split(',');
+        if ( selectedTags.length > 0) {
+          cb(selectedTags, false);
+        }
+        dialog.find( "form" )[0].reset();
+        dialog.dialog( "close" );
+      },
+      '取消': function() {
+        dialog.find( "form" )[0].reset();
+        dialog.dialog( "close" );
+      }
+    }
+  });
+
+  var tagSources = [];
+  for(var i in g.data.tags) {
+    tagSources.push(i);
+  }
+  tagSources.sort();
+
+  $('#inputNewTag').tagEditor('destroy');
+  $('#inputNewTag').tagEditor({
+    removeDuplicates: true,
+    autocomplete: {
+        delay: 0, // show suggestions immediately
+        position: { collision: 'flip' }, // automatic menu position up/down
+        source: tagSources
+    }
+  });
+
+  var html = "";
+  for( var i = 0; i < tagSources.length; i++) {
+    html += '<span class="spanSelectTag"> <button type="button" class="btn btn-default btn-xs btnSelectTag" tagValue="' + tagSources[i] + '">' +  tagSources[i]  + '</button></span>';
+  }
+  $("#unselectedTags").html(html);
+  $(".btnSelectTag").bind('click',function(){
+    $('#inputNewTag').tagEditor('addTag', $(this).attr('tagValue'));
+  });
 }
