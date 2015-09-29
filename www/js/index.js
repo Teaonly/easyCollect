@@ -92,12 +92,14 @@ g.service.getData = function(node) {
       $("#listItems").html(html);
 
       // 配置相关GUI事件处理
+      $(".btnDeleteCollect").unbind('click');
       $(".btnDeleteCollect").bind('click',function(){
         var index = $(this).attr('index');
         g.service.removeCollect( index );
         $("#item_" + index).remove();
       });
       $(".linkText").linkify();
+      $(".btnAccessOrignalWeibo").unbind('click');
       $(".btnAccessOrignalWeibo").bind('click', function(){
         var index = $(this).attr('index');
         if(index !== undefined) {
@@ -284,11 +286,13 @@ g.gui.updateTagTree = function() {
 
 g.gui.refreshTagEvent = function() {
   // 增加标签
+  $(".btnAddTag").unbind('click');
   $(".btnAddTag").bind('click', function(){
     var index = $(this).parent().attr('index');
     g.gui.addTag($(this).parent(), index);
   });
   // 星标
+  $(".btnStar").unbind('click');
   $(".btnStar").bind('click', function() {
      var index = $(this).parent().attr('index');
      var iSelector = $(this).find('i:first');
@@ -308,6 +312,7 @@ g.gui.refreshTagEvent = function() {
 
   });
   // 移除标签
+  $(".btnRemoveTag").unbind('click');
   $(".btnRemoveTag").bind('click', function(){
     var index = $(this).parent().attr('index');
     var tagValue = $(this).attr('tagValue');
@@ -429,6 +434,7 @@ g.gui.addTag = function(tagDiv, index) {
     html += '<span class="spanSelectTag"> <button type="button" class="btn btn-default btn-xs btnSelectTag" tagValue="' + tagSources[i] + '">' +  tagSources[i]  + '</button></span>';
   }
   $("#unselectedTags").html(html);
+  $(".btnSelectTag").unbind('click');
   $(".btnSelectTag").bind('click',function(){
     $('#inputNewTag').tagEditor('addTag', $(this).attr('tagValue'));
   });
@@ -486,6 +492,7 @@ g.gui.selectTags = function(cb) {
     html += '<span class="spanSelectTag"> <button type="button" class="btn btn-default btn-xs btnSelectTag" tagValue="' + tagSources[i] + '">' +  tagSources[i]  + '</button></span>';
   }
   $("#unselectedTags").html(html);
+  $(".btnSelectTag").unbind('click');
   $(".btnSelectTag").bind('click',function(){
     $('#inputNewTag').tagEditor('addTag', $(this).attr('tagValue'));
   });
