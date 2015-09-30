@@ -18,6 +18,7 @@ $(document).ready(function () {
   });
 
   $("#btnAddURL").bind('click', g.gui.addURL);
+  $("#btnAddGist").bind('click', g.gui.addGist);
 
   g.service.getIndex();
 });
@@ -354,6 +355,40 @@ g.gui.addURL = function() {
         }
       }
   });
+};
+
+g.gui.addGist = function() {
+  // 初始化代码编辑器
+  var editor = ace.edit("codeEditor");
+  editor.setTheme("ace/theme/xcode");
+  editor.session.setMode("ace/mode/" + $("#langGist").val());
+  editor.renderer.setScrollMargin(10, 10);
+  editor.setValue("");
+
+  // 初始化事件
+  $("#langGist").off("change");
+  $("#langGist").on("change", function(){
+    editor.session.setMode("ace/mode/" + $("#langGist").val());
+  });
+
+  var dialog = $("#addGistDialog").dialog({
+    modal: true,
+    width: 640,
+    buttons: {
+      "确定": function() {
+        g.service.addGist( );
+        
+
+        dialog.dialog( "close" );
+      },
+      '取消': function() {
+
+
+        dialog.dialog( "close" );
+      }
+    }
+  });
+
 };
 
 g.gui.addTag = function(tagDiv, index) {

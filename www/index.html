@@ -72,6 +72,23 @@
     </form>
   </div>
 
+  <div id="addGistDialog" title="增加gist">
+      <label>说明</label>
+      <textarea id="textGist" class="form-control inlineText" rows="2"></textarea>
+      <label>语言</label>
+      <select class="form-control" id="langGist">
+          <option value="c_cpp" file="cpp">C/C++</option>
+          <option value="java" file="java">Java</option>
+          <option value="javascript" file="js">Javascript</option>
+          <option value="python" file="py">Python</option>
+          <option value="lua" file="lua">Lua</option>
+          <option value="html" file="html">HTML</option>
+          <option value="css" file="css">CSS</option>
+          <option value="sh" file="sh">Shell</option>
+      </select>
+      <pre id="codeEditor"></pre>
+  </div>
+
 </body>
 
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 Jquery 1.10.2, bootstrap 3.0.3-->
@@ -83,6 +100,7 @@
 <script type="text/javascript" src="js/lib/jquery.caret.js"></script>
 <script type="text/javascript" src="js/lib/jquery.tag-editor.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.linkify.min.js"></script>
+<script type="text/javascript" src="js/lib/ace/ace.js"></script>
 
 <script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript" src="js/tags.js"></script>
