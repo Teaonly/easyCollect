@@ -186,6 +186,24 @@ g.service.addURL = function(url, memo) {
   });
 };
 
+g.service.addGist = function(lang, filename, gist) {
+  var param = {
+    'source': 'gist',
+    'lang': lang,
+    'filename': filename
+  };
+
+  $.ajax({
+    type: "POST",
+    url: '/_/insertCollect?' + $.param(param),
+    data: gist,
+    dataType: 'text'
+  });
+
+  console.log(">>>>>>>>>: " + '/_/insertCollect?' + $.param(param));
+};
+
+
 g.service.doStar = function(index, isStar) {
   var starString = jQuery.param({star:isStar});
   var address = '/_/updateStar?index=' + index;
@@ -341,12 +359,12 @@ g.gui.addURL = function() {
           var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
           var url = $("#inputURL").val();
           var memo = $("#textURLMemo").val();
-          if (regexp.test(url) && memo != "" && memo.length <= 144) {
+          if (regexp.test(url) && memo != "" && memo.length <= 144 && memo.length >= 6) {
             g.service.addURL(url, memo);
             dialog.find( "form" )[0].reset();
             dialog.dialog( "close" );
           } else {
-            alert("请输入正确的信息，注释不能超过144个字。");
+            alert("请输入正确的信息，注释不能超过144个字，最少6个字。");
           }
         },
         "取消": function(){
@@ -366,6 +384,7 @@ g.gui.addGist = function() {
   editor.setValue("");
 
   // 初始化事件
+
   $("#langGist").off("change");
   $("#langGist").on("change", function(){
     editor.session.setMode("ace/mode/" + $("#langGist").val());
@@ -376,8 +395,16 @@ g.gui.addGist = function() {
     width: 640,
     buttons: {
       "确定": function() {
-        g.service.addGist( );
-        
+
+        var memo = $("#textGist").val();
+        var gist = editor.getValue();
+        var lang = $("#langGist").val();
+        var filename = $("#langGist").attr("filename");
+        if ( memo.length >= 144 || memo.length < 6 || gist.length < 4) {
+          alert("请输入正确的信息，说明不能超过144个字，最少6个字，代码不能为空。");
+          return;
+        }
+        g.service.addGist(lang, filename, gist);
 
         dialog.dialog( "close" );
       },
