@@ -47,11 +47,34 @@
     return html;
   };
 
+
+  post.buildGist = function(item) {
+    var html = "";
+    html +=  '<div class="list-group-item well collect" id="item_' + item.index + '"">';
+    html +=  '<div class="text-right noline">';
+    html +=  '<button type="button" class="btn btn-warning btn-xs btnDeleteCollect" index="' + item.index + '">' +
+             '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
+             '删除</button></div>';
+
+    html +=  '<h6><span class="glyphicon glyphicon-file" aria-hidden="true"></span>代码片段（gist）</a></h6>';
+    html +=  '<blockquote><p class="linkText">' + item.memo + '</p></blockquote>';
+
+    html +=  '<p>' + item.date + '<button class="btn btn-link btn-xs btnViewGist" index="' + item.index + '">查看代码</button></p>';
+
+    html +=  g.tagWidget.build( item.index, item.tags, item.star );
+
+    html +=  '</div>';
+
+    return html;
+  }
+
   post.build = function(item) {
     if ( item.source === 'weibo') {
       return post.buildWeibo(item);
     } else if ( item.source === 'url') {
       return post.buildURL(item);
+    } else if ( item.source === 'gist') {
+      return post.buildGist(item);
     }
     var html = "";
     html +=  '<div class="list-group-item well collect" id="item_' + item.index + '"">';

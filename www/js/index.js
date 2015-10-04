@@ -107,6 +107,15 @@ g.service.getData = function(node) {
           g.service.accessWeibo(index);
         }
       });
+      $(".btnViewGist").unbind('click');
+      $(".btnViewGist").bind('click', function(){
+        var index = $(this).attr('index');
+        if(index !== undefined) {
+          g.service.getGist(index, function(gist) {
+            g.gui.showGist(gist);
+          });
+        }
+      });
       g.gui.refreshTagEvent();
 
       $("#waitDialog").dialog( "close" );
@@ -186,11 +195,12 @@ g.service.addURL = function(url, memo) {
   });
 };
 
-g.service.addGist = function(lang, filename, gist) {
+g.service.addGist = function(lang, filename, memo, gist) {
   var param = {
     'source': 'gist',
     'lang': lang,
-    'filename': filename
+    'filename': filename,
+    'memo': memo
   };
 
   $.ajax({
@@ -199,10 +209,16 @@ g.service.addGist = function(lang, filename, gist) {
     data: gist,
     dataType: 'text'
   });
-
-  console.log(">>>>>>>>>: " + '/_/insertCollect?' + $.param(param));
 };
 
+g.service.getGist = function(index, cb) {
+  var address = '/_/getGist?index=' + index;
+  $.getJSON( address, function( dataObj ) {
+    if ( cb !== undefined) {
+      cb(dataObj);
+    }
+  });
+};
 
 g.service.doStar = function(index, isStar) {
   var starString = jQuery.param({star:isStar});
@@ -379,16 +395,17 @@ g.gui.addGist = function() {
   // 初始化代码编辑器
   var editor = ace.edit("codeEditor");
   editor.setTheme("ace/theme/xcode");
-  editor.session.setMode("ace/mode/" + $("#langGist").val());
+  editor.session.setMode("ace/mode/c_cpp");
   editor.renderer.setScrollMargin(10, 10);
   editor.setValue("");
 
   // 初始化事件
-
   $("#langGist").off("change");
   $("#langGist").on("change", function(){
-    editor.session.setMode("ace/mode/" + $("#langGist").val());
+    var lang_filename = $("#langGist").val().split(':');
+    editor.session.setMode("ace/mode/" + lang_filename[0]);
   });
+  editor.session.setMode("ace/mode/" + $("#langGist").val().split(':')[0]);
 
   var dialog = $("#addGistDialog").dialog({
     modal: true,
@@ -398,13 +415,14 @@ g.gui.addGist = function() {
 
         var memo = $("#textGist").val();
         var gist = editor.getValue();
-        var lang = $("#langGist").val();
-        var filename = $("#langGist").attr("filename");
+        var lang = $("#langGist").val().split(':')[0];
+        var filename = $("#langGist").val().split(':')[1];
+
         if ( memo.length >= 144 || memo.length < 6 || gist.length < 4) {
           alert("请输入正确的信息，说明不能超过144个字，最少6个字，代码不能为空。");
           return;
         }
-        g.service.addGist(lang, filename, gist);
+        g.service.addGist(lang, filename, memo, gist);
 
         dialog.dialog( "close" );
       },
@@ -500,7 +518,24 @@ g.gui.addTag = function(tagDiv, index) {
   $(".btnSelectTag").bind('click',function(){
     $('#inputNewTag').tagEditor('addTag', $(this).attr('tagValue'));
   });
-}
+};
+
+
+g.gui.showGist = function(gist) {
+  // 初始化代码编辑器
+  var editor = ace.edit("codeViewer");
+  editor.setTheme("ace/theme/xcode");
+  editor.session.setMode("ace/mode/" + gist.lang);
+  editor.renderer.setScrollMargin(10, 10);
+  editor.setValue(gist.content);
+
+  $("#infoFilepath").html(gist.filepath);
+
+  var dialog = $("#gistViewDialog").dialog({
+    modal: true,
+    width: 640
+  });
+};
 
 g.gui.selectTags = function(cb) {
   // 按标签多选

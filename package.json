@@ -17,6 +17,7 @@
         "optimist": "*",
         "open": "*",
         "nedb": "*",
-        "blueimp-md5": "*" 
+        "blueimp-md5": "*",
+        "dateformat": "*"
     }
 }
