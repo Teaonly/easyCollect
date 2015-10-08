@@ -256,57 +256,69 @@ g.gui.updateTagTree = function() {
     });
   }
 
-  treeData[1].children = [];
-  var myTags = [];
-  var subTree = {};
-  for (var t in g.data.tags) {
-    myTags.push(t);
-    var splitPos = t.indexOf('-');
-    if ( splitPos > 0 && splitPos < t.length - 1) {
-      var cat = t.substring(0, splitPos);
-      if ( subTree[cat] === undefined) {
-        subTree[cat] = [];
-        treeData[1].children.push({
-            label:  cat
-          , children: subTree[cat]
-        });
+  var findInArray = function(label, labelList) {
+    for(var i = 0; i < labelList.length; i++) {
+      if ( labelList[i].label === label
+        && labelList[i].children !== undefined) {
+        return i;
       }
     }
-  }
-  myTags.sort();
-  treeData[1].children.sort( function(a,b) {
-    if ( a.label > b.label) {
-      return 1;
-    } if ( a.label === b.label) {
-      return 0;
-    } else {
-      return -1;
-    }
-  });
+    return -1;
+  };
 
-  treeData[1].children.unshift({label:'#星标#', type:'star'});
-  treeData[1].children.unshift({label:'#多标签选择#', type:'select_tags', vlaue:[]});
-  treeData[1].children.unshift({label:'#未设置标签#', type:'tag', vlaue:null});
+  treeData[1].children = [];
+  // 构建树结构
+  for(var t in g.data.tags) {
+    var seq = t.split('-');
+    var treeTop = treeData[1].children;
 
-  for(var i =0; i < myTags.length; i++) {
-    var t = myTags[i];
-    var splitPos = t.indexOf('-');
-    if ( splitPos > 0 && splitPos < t.length - 1) {
-      var cat = t.substring(0, splitPos);
-      subTree[cat].push({
-        label:  t + "（" + g.data.tags[t] + "）"
-        , type:   'tag'
-        , value:  t
-      });
-    } else {
-      treeData[1].children.push({
-          label:  t + "（" + g.data.tags[t] + "）"
-        , type:   'tag'
-        , value:  t
-      });
+    for(var i = 0; i < seq.length - 1; i++) {
+      var v = seq[i];
+      var p = findInArray(v, treeTop);
+      if ( p < 0) {
+        var newNode = {type:'tag', label:v, children:[]};
+        treeTop.push(newNode);
+        treeTop = newNode.children;
+      } else {
+        treeTop = treeTop[p].children;
+      }
     }
+
+    v = seq[seq.length - 1];
+    var node = {type:'tag', label:t+"(" + g.data.tags[t] + ")", value:t};
+    treeTop.push(node);
   }
 
+  // 排序
+  var sortTree = function(treeTop) {
+    treeTop.sort( function(a,b) {
+      if ( a.children !== undefined && b.children === undefined) {
+        return -1;
+      } else if ( b.children !== undefined && a.children === undefined ) {
+        return 1;
+      }
+      if ( a.label > b.label) {
+        return 1;
+      } if ( a.label === b.label) {
+        return 0;
+      } else {
+        return -1;
+      }
+    });
+
+    for(var i = 0; i < treeTop.length; i++) {
+       if ( treeTop[i].children !== undefined) {
+         sortTree(treeTop[i].children);
+       }
+    }
+  };
+  sortTree( treeData[1].children);
+
+  treeData[1].children.unshift({label:'#星标#', type:'star', value:null});
+  treeData[1].children.unshift({label:'#多标签选择#', type:'select_tags', value:null});
+  treeData[1].children.unshift({label:'#未设置标签#', type:'tag', value:null});
+
+  // 更新GUI
   $("#tagsTree").tree('destroy');
   $("#tagsTree").tree({
       data: treeData,
@@ -314,7 +326,9 @@ g.gui.updateTagTree = function() {
       dragAndDrop: false,
       keyboardSupport: false,
       onCanSelectNode: function(node) {
-        g.service.getData(node);
+        if ( node.value !== undefined) {
+          g.service.getData(node);
+        }
       }
   });
 };
@@ -427,8 +441,6 @@ g.gui.addGist = function() {
         dialog.dialog( "close" );
       },
       '取消': function() {
-
-
         dialog.dialog( "close" );
       }
     }
