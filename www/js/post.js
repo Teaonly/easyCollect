@@ -14,7 +14,7 @@
     html +=  '<blockquote><p class="linkText">' + item.post.text + '</p></blockquote>';
     if ( item.repost !== undefined ) {
       html +=  '<div class="well">';
-      html +=  '<h6><a href="http://weibo.com/u/' + item.repost.user_id + '" target="_blank"><h6>@' + item.repost.user_name + '</h6></a>';
+      html +=  '<h6><a href="http://weibo.com/u/' + item.repost.user_id + '" target="_blank"><h6>@' + item.repost.user_name + '</a></h6>';
       html +=  '<blockquote><p class="linkText">' + item.repost.text + '</p></blockquote>';
       html +=  '<p>' + item.repost.date + '</p>';
       html +=  '</div>';
