@@ -247,7 +247,7 @@ g.gui.updateTagTree = function() {
   ];
 
   treeData[0].children = [];
-  treeData[0].children.push({label:'全部来源', type:'source', vlaue:'all'});
+  treeData[0].children.push({label:'全部来源', type:'source', value:'all'});
   for(var i in g.data.sources) {
     treeData[0].children.push({
         label:  g.data.sources[i]
