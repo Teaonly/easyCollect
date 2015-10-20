@@ -135,8 +135,8 @@ g.service.removeCollect = function(index){
     g.data.tags[removedTags[j]] --;
     if ( g.data.tags[removedTags[j]] === 0) {
       delete g.data.tags[removedTags[j]];
-      needUpdate = true;
     }
+    needUpdate = true;
   }
   if ( needUpdate) {
     g.gui.updateTagTree();
