@@ -1,0 +1,9 @@
+{
+    "ossConfig":{
+        "key"       :   "hello",
+        "secret"    :   "world",
+        "path"      :   "oss://mycollect",
+        "end_point" :   "http://oss-cn-beijing.aliyuncs.com"
+    }
+}
+
